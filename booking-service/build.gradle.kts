@@ -14,9 +14,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-jooq")
     
-    // State machine for booking flow
-    implementation("org.springframework.statemachine:spring-statemachine-core")
-    
     // Kafka for event-driven communication
     implementation("org.springframework.kafka:spring-kafka")
     

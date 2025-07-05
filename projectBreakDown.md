@@ -32,19 +32,21 @@ This document outlines the end-to-end build plan for the Flight Booking Platform
 - [x] Implement Elasticsearch repositories for flight data
 - [x] Create data synchronization mechanisms between databases
 
-### 2.3 Service Layer Implementation
+### 2.3 API Layer Implementation
+- [x] Generate OpenAPI specification from LLD document
+- [x] Configure OpenAPI generator for server code generation
+- [x] Configure OpenAPI documentation
+- [x] Implement REST controllers for flight search
+- [x] Implement REST controllers for flight details
+- [x] Implement REST controllers for seat availability
+- [x] Implement REST controllers for airports and airlines
+
+### 2.4 Service Layer Implementation
 - [ ] Implement Flight search service
 - [ ] Implement Flight details service
 - [ ] Implement Seat availability service
 - [ ] Implement Journey search and validation service
 - [ ] Implement data indexing and update services
-
-### 2.4 API Layer Implementation
-- [ ] Implement REST controllers for flight search
-- [ ] Implement REST controllers for flight details
-- [ ] Implement REST controllers for seat availability
-- [ ] Implement REST controllers for airports and airlines
-- [ ] Configure OpenAPI documentation
 
 ### 2.5 Testing
 - [ ] Implement unit tests for domain models and services
@@ -90,11 +92,13 @@ This document outlines the end-to-end build plan for the Flight Booking Platform
 - [ ] Implement booking validation service
 
 ### 3.6 API Layer Implementation
+- [ ] Generate OpenAPI specification from LLD document
+- [ ] Configure OpenAPI generator for server code generation
+- [ ] Configure OpenAPI documentation
 - [ ] Implement REST controllers for booking creation
 - [ ] Implement REST controllers for booking management
 - [ ] Implement REST controllers for booking search
 - [ ] Implement webhook handlers for payment callbacks
-- [ ] Configure OpenAPI documentation
 
 ### 3.7 Testing
 - [ ] Implement unit tests for domain models and services

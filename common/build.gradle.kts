@@ -20,7 +20,7 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-validation")
     
     // Jackson for JSON processing
-    api("com.fasterxml.jackson.module:jackson-kotlin")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin")
     api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     
     // Testing

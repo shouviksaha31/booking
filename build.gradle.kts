@@ -1,4 +1,5 @@
 plugins {
+	`kotlin-dsl`
 	kotlin("jvm") version "1.9.25" apply false
 	kotlin("plugin.spring") version "1.9.25" apply false
 	id("org.springframework.boot") version "3.5.3" apply false
@@ -14,6 +15,12 @@ allprojects {
 	}
 }
 
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
 subprojects {
 	apply {
 		plugin("org.jetbrains.kotlin.jvm")
@@ -22,21 +29,15 @@ subprojects {
 		plugin("io.spring.dependency-management")
 	}
 
-	java {
-		toolchain {
-			languageVersion = JavaLanguageVersion.of(21)
-		}
-	}
-
 	dependencies {
 		// Common dependencies for all subprojects
-		"implementation"("org.jetbrains.kotlin:kotlin-reflect")
-		"implementation"("com.fasterxml.jackson.module:jackson-module-kotlin")
+		implementation("org.jetbrains.kotlin:kotlin-reflect")
+		implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 		
 		// Test dependencies
-		"testImplementation"("org.springframework.boot:spring-boot-starter-test")
-		"testImplementation"("org.jetbrains.kotlin:kotlin-test-junit5")
-		"testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
+		testImplementation("org.springframework.boot:spring-boot-starter-test")
+		testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+		testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	}
 
 	tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

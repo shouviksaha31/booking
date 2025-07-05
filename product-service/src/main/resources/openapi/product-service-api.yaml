@@ -1,0 +1,532 @@
+openapi: 3.0.3
+info:
+  title: Flight Booking Platform - Product Service API
+  description: API for the Product Service of the Flight Booking Platform
+  version: 1.0.0
+  contact:
+    name: Windsurf Engineering Team
+    email: engineering@windsurf.com
+    url: https://windsurf.com
+  license:
+    name: Proprietary
+    url: https://windsurf.com/terms
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+  - url: https://api.booking.windsurf.com
+    description: Production server
+
+tags:
+  - name: flights
+    description: Flight search and details
+  - name: seats
+    description: Seat availability and details
+  - name: airports
+    description: Airport information
+  - name: airlines
+    description: Airline information
+
+paths:
+  /api/v1/flights/search:
+    get:
+      tags:
+        - flights
+      summary: Search for flights
+      description: Search for flights based on origin, destination, and dates
+      operationId: searchFlights
+      parameters:
+        - name: origin
+          in: query
+          description: Origin airport code
+          required: true
+          schema:
+            type: string
+        - name: destination
+          in: query
+          description: Destination airport code
+          required: true
+          schema:
+            type: string
+        - name: departureDate
+          in: query
+          description: Departure date (YYYY-MM-DD)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: returnDate
+          in: query
+          description: Return date for round trips (YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: passengers
+          in: query
+          description: Number of passengers
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: cabinClass
+          in: query
+          description: Cabin class preference
+          required: false
+          schema:
+            type: string
+            enum: [ECONOMY, PREMIUM_ECONOMY, BUSINESS, FIRST]
+            default: ECONOMY
+        - name: pageNumber
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: pageSize
+          in: query
+          description: Page size for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightSearchResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/v1/flights/{flightId}:
+    get:
+      tags:
+        - flights
+      summary: Get flight details
+      description: Get detailed information about a specific flight
+      operationId: getFlightDetails
+      parameters:
+        - name: flightId
+          in: path
+          description: ID of the flight
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flight'
+        '404':
+          description: Flight not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/v1/flights/{flightId}/seats:
+    get:
+      tags:
+        - seats
+      summary: Get available seats for a flight
+      description: Get information about available seats for a specific flight
+      operationId: getFlightSeats
+      parameters:
+        - name: flightId
+          in: path
+          description: ID of the flight
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeatResponse'
+        '404':
+          description: Flight not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/v1/airports:
+    get:
+      tags:
+        - airports
+      summary: Get list of airports
+      description: Get a list of airports with optional filtering
+      operationId: getAirports
+      parameters:
+        - name: query
+          in: query
+          description: Search query for airport name or code
+          required: false
+          schema:
+            type: string
+        - name: country
+          in: query
+          description: Filter by country code
+          required: false
+          schema:
+            type: string
+        - name: pageNumber
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: pageSize
+          in: query
+          description: Page size for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirportResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/v1/airlines:
+    get:
+      tags:
+        - airlines
+      summary: Get list of airlines
+      description: Get a list of airlines with optional filtering
+      operationId: getAirlines
+      parameters:
+        - name: query
+          in: query
+          description: Search query for airline name or code
+          required: false
+          schema:
+            type: string
+        - name: pageNumber
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: pageSize
+          in: query
+          description: Page size for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirlineResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+components:
+  schemas:
+    FlightSearchResponse:
+      type: object
+      properties:
+        flights:
+          type: array
+          items:
+            $ref: '#/components/schemas/Flight'
+        totalResults:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+
+    Flight:
+      type: object
+      properties:
+        id:
+          type: string
+        flightNumber:
+          type: string
+        airline:
+          $ref: '#/components/schemas/Airline'
+        origin:
+          $ref: '#/components/schemas/Airport'
+        destination:
+          $ref: '#/components/schemas/Airport'
+        departureTime:
+          type: string
+          format: date-time
+        arrivalTime:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+          description: Duration in minutes
+        stops:
+          type: array
+          items:
+            $ref: '#/components/schemas/Stop'
+        aircraft:
+          $ref: '#/components/schemas/Aircraft'
+        status:
+          type: string
+          enum: [SCHEDULED, DELAYED, CANCELLED, IN_AIR, LANDED]
+        priceMap:
+          type: object
+          additionalProperties:
+            type: number
+            format: double
+
+    Stop:
+      type: object
+      properties:
+        stopId:
+          type: string
+        flightId:
+          type: string
+        departureAirport:
+          $ref: '#/components/schemas/Airport'
+        arrivalAirport:
+          $ref: '#/components/schemas/Airport'
+        departureTime:
+          type: string
+          format: date-time
+        arrivalTime:
+          type: string
+          format: date-time
+        aircraft:
+          $ref: '#/components/schemas/Aircraft'
+        availableSeats:
+          type: integer
+          format: int32
+
+    SeatResponse:
+      type: object
+      properties:
+        seats:
+          type: array
+          items:
+            $ref: '#/components/schemas/Seat'
+        seatMap:
+          $ref: '#/components/schemas/SeatMap'
+
+    Seat:
+      type: object
+      properties:
+        seatId:
+          type: string
+        stopId:
+          type: string
+        seatNumber:
+          type: string
+        type:
+          type: string
+          enum: [ECONOMY, PREMIUM_ECONOMY, BUSINESS, FIRST]
+        price:
+          type: number
+          format: double
+        available:
+          type: boolean
+        features:
+          type: array
+          items:
+            type: string
+            enum: [EXTRA_LEGROOM, WINDOW, AISLE, EXIT_ROW, POWER_OUTLET, USB_PORT]
+
+    SeatMap:
+      type: object
+      properties:
+        rows:
+          type: integer
+          format: int32
+        columns:
+          type: integer
+          format: int32
+        layout:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+
+    AirportResponse:
+      type: object
+      properties:
+        airports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Airport'
+        totalResults:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+
+    Airport:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        timezone:
+          type: string
+
+    AirlineResponse:
+      type: object
+      properties:
+        airlines:
+          type: array
+          items:
+            $ref: '#/components/schemas/Airline'
+        totalResults:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+
+    Airline:
+      type: object
+      properties:
+        airlineCode:
+          type: string
+        name:
+          type: string
+        logoUrl:
+          type: string
+        country:
+          type: string
+        active:
+          type: boolean
+        allianceCode:
+          type: string
+        allianceName:
+          type: string
+
+    Aircraft:
+      type: object
+      properties:
+        aircraftId:
+          type: string
+        model:
+          type: string
+        manufacturer:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        type:
+          type: string
+
+    ApiError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
