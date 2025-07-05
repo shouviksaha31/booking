@@ -1,0 +1,73 @@
+{
+  "settings": {
+    "number_of_shards": 3,
+    "number_of_replicas": 1,
+    "analysis": {
+      "analyzer": {
+        "keyword_lowercase": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "filter": ["lowercase"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "flightId": {
+        "type": "keyword"
+      },
+      "flightNumber": {
+        "type": "keyword"
+      },
+      "airlineCode": {
+        "type": "keyword"
+      },
+      "airlineName": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "date": {
+        "type": "date",
+        "format": "yyyy-MM-dd"
+      },
+      "flightStartTime": {
+        "type": "date"
+      },
+      "flightEndTime": {
+        "type": "date"
+      },
+      "source": {
+        "type": "keyword"
+      },
+      "destination": {
+        "type": "keyword"
+      },
+      "status": {
+        "type": "keyword"
+      },
+      "priceMap": {
+        "type": "object",
+        "properties": {
+          "ADULT": { "type": "float" },
+          "CHILD": { "type": "float" },
+          "INFANT": { "type": "float" },
+          "SENIOR": { "type": "float" },
+          "STUDENT": { "type": "float" },
+          "MILITARY": { "type": "float" }
+        }
+      },
+      "createdAt": {
+        "type": "date"
+      },
+      "updatedAt": {
+        "type": "date"
+      }
+    }
+  }
+}

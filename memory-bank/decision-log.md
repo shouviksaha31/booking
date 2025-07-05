@@ -88,6 +88,27 @@ This file tracks key architectural and technical decisions made during the proje
 - **Alternatives Considered**: Monolithic architecture, modular monolith
 - **Consequences**: Better scalability and team autonomy, more complex deployment and monitoring
 
+### AD-013: Multi-Project Gradle Structure
+- **Date**: 2025-07-05
+- **Decision**: Implement a multi-project Gradle structure with common, product-service, and booking-service modules
+- **Rationale**: Promotes code reuse, clear separation of concerns, and modular development
+- **Alternatives Considered**: Monolithic application, separate repositories for each service
+- **Consequences**: Better code organization, easier dependency management, potential for shared code reuse
+
+### AD-014: Dual Repository Pattern for Product Service
+- **Date**: 2025-07-05
+- **Decision**: Implement both JOOQ repositories for SQL data and Elasticsearch repositories for flight data
+- **Rationale**: Leverages the strengths of both systems - SQL for transactional data and Elasticsearch for search
+- **Alternatives Considered**: Using only SQL with full-text search, using only Elasticsearch
+- **Consequences**: Better performance for different use cases, increased complexity in data synchronization
+
+### AD-015: Data Synchronization Service
+- **Date**: 2025-07-05
+- **Decision**: Create a dedicated service for synchronizing data between SQL and Elasticsearch
+- **Rationale**: Ensures data consistency across both databases while maintaining separation of concerns
+- **Alternatives Considered**: Database triggers, application-level synchronization in repository methods
+- **Consequences**: Better separation of concerns, potential for asynchronous updates, additional complexity
+
 ### Change Log Entry [2025-07-05]
 - **What**: Initial file creation
 - **Why**: Setting up memory bank structure
@@ -108,6 +129,12 @@ This file tracks key architectural and technical decisions made during the proje
 
 ### Change Log Entry [2025-07-05]
 - **What**: Added recent architectural decisions to the decision log
+- **Why**: To maintain a comprehensive record of project decisions and their rationale
+- **Impact**: Provides up-to-date information on project architecture and technology choices
+- **Reference**: Recent project developments
+
+### Change Log Entry [2025-07-05]
+- **What**: Added new architectural decisions to the decision log
 - **Why**: To maintain a comprehensive record of project decisions and their rationale
 - **Impact**: Provides up-to-date information on project architecture and technology choices
 - **Reference**: Recent project developments

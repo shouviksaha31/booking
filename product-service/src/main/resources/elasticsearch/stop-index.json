@@ -1,0 +1,63 @@
+{
+  "settings": {
+    "number_of_shards": 3,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "stopId": {
+        "type": "keyword"
+      },
+      "flightId": {
+        "type": "keyword"
+      },
+      "arrivalTime": {
+        "type": "date"
+      },
+      "departureTime": {
+        "type": "date"
+      },
+      "arrivalAirport": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "keyword" },
+          "name": { "type": "text", "fields": { "keyword": { "type": "keyword" } } },
+          "city": { "type": "text", "fields": { "keyword": { "type": "keyword" } } },
+          "country": { "type": "text", "fields": { "keyword": { "type": "keyword" } } },
+          "timezone": { "type": "keyword" }
+        }
+      },
+      "departureAirport": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "keyword" },
+          "name": { "type": "text", "fields": { "keyword": { "type": "keyword" } } },
+          "city": { "type": "text", "fields": { "keyword": { "type": "keyword" } } },
+          "country": { "type": "text", "fields": { "keyword": { "type": "keyword" } } },
+          "timezone": { "type": "keyword" }
+        }
+      },
+      "aircraftId": {
+        "type": "keyword"
+      },
+      "aircraftType": {
+        "type": "keyword"
+      },
+      "stopSequence": {
+        "type": "integer"
+      },
+      "terminal": {
+        "type": "keyword"
+      },
+      "gate": {
+        "type": "keyword"
+      },
+      "createdAt": {
+        "type": "date"
+      },
+      "updatedAt": {
+        "type": "date"
+      }
+    }
+  }
+}

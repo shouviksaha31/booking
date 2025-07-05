@@ -1,0 +1,43 @@
+{
+  "settings": {
+    "number_of_shards": 3,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "seatId": {
+        "type": "keyword"
+      },
+      "stopId": {
+        "type": "keyword"
+      },
+      "seatNumber": {
+        "type": "keyword"
+      },
+      "type": {
+        "type": "keyword"
+      },
+      "price": {
+        "type": "float"
+      },
+      "available": {
+        "type": "boolean"
+      },
+      "features": {
+        "type": "keyword"
+      },
+      "row": {
+        "type": "integer"
+      },
+      "column": {
+        "type": "keyword"
+      },
+      "createdAt": {
+        "type": "date"
+      },
+      "updatedAt": {
+        "type": "date"
+      }
+    }
+  }
+}
