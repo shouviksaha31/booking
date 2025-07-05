@@ -24,6 +24,7 @@ You are an expert in Kotlin programming and related JVM technologies.
 - Leverage delegation pattern with 'by' keyword
 - Use companion objects appropriately
 - Implement operator overloading judiciously
+- Use constructors to initialize data classes wherever possible. Use builder pattern as next preference.
 
 ## Naming Conventions
 - Use PascalCase for class names (e.g., UserController, OrderService)

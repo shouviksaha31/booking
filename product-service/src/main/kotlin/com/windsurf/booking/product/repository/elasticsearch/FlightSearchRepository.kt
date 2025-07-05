@@ -2,14 +2,12 @@ package com.windsurf.booking.product.repository.elasticsearch
 
 import com.windsurf.booking.product.domain.model.Flight
 import com.windsurf.booking.product.domain.model.FlightSearchCriteria
-import org.elasticsearch.index.query.BoolQueryBuilder
-import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.search.sort.SortBuilders
-import org.elasticsearch.search.sort.SortOrder
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import org.springframework.data.elasticsearch.core.SearchHit
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder
+import org.springframework.data.elasticsearch.core.query.Criteria
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery
+import org.springframework.data.elasticsearch.core.query.Query
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
 
@@ -23,24 +21,20 @@ class FlightSearchRepository(private val elasticsearchOperations: ElasticsearchO
      * Search for flights based on search criteria
      */
     fun searchFlights(criteria: FlightSearchCriteria): List<Flight> {
-        val boolQuery = QueryBuilders.boolQuery()
-        
-        // Add required criteria
-        boolQuery.must(QueryBuilders.termQuery("source", criteria.origin))
-        boolQuery.must(QueryBuilders.termQuery("destination", criteria.destination))
-        boolQuery.must(QueryBuilders.termQuery("date", criteria.departureDate.toString()))
+        // Create criteria query
+        val searchCriteria = Criteria("source").`is`(criteria.origin)
+            .and(Criteria("destination").`is`(criteria.destination))
+            .and(Criteria("date").`is`(criteria.departureDate.toString()))
         
         // Add optional filters
-        addOptionalFilters(boolQuery, criteria)
+        addOptionalFilters(searchCriteria, criteria)
         
-        val searchQuery = NativeSearchQueryBuilder()
-            .withQuery(boolQuery)
-            .withSort(SortBuilders.fieldSort("flightStartTime").order(SortOrder.ASC))
-            .withPageable(PageRequest.of(criteria.page, criteria.size))
-            .build()
+        val query: Query = CriteriaQuery(searchCriteria)
+            .setPageable(PageRequest.of(criteria.page, criteria.size))
         
-        return elasticsearchOperations.search(searchQuery, Flight::class.java)
+        return elasticsearchOperations.search(query, Flight::class.java)
             .map(SearchHit<Flight>::getContent)
+            .filter { if (criteria.maxStops != null) it.stops.size <= criteria.maxStops else true }
             .toList()
     }
     
@@ -82,20 +76,15 @@ class FlightSearchRepository(private val elasticsearchOperations: ElasticsearchO
         return result
     }
     
-    private fun addOptionalFilters(boolQuery: BoolQueryBuilder, criteria: FlightSearchCriteria) {
+    private fun addOptionalFilters(criteria: Criteria, searchCriteria: FlightSearchCriteria) {
         // Filter by preferred airlines if specified
-        if (criteria.preferredAirlines.isNotEmpty()) {
-            boolQuery.filter(QueryBuilders.termsQuery("airlineCode", criteria.preferredAirlines))
+        if (searchCriteria.preferredAirlines.isNotEmpty()) {
+            criteria.and(Criteria("airlineCode").`in`(searchCriteria.preferredAirlines))
         }
         
         // Filter by direct flights if requested
-        if (criteria.directFlightsOnly) {
-            boolQuery.filter(QueryBuilders.termQuery("stops.size", 0))
-        }
-        
-        // Filter by maximum number of stops if specified
-        if (criteria.maxStops != null) {
-            boolQuery.filter(QueryBuilders.rangeQuery("stops.size").lte(criteria.maxStops))
+        if (searchCriteria.directFlightsOnly) {
+            criteria.and(Criteria("stops").empty())
         }
     }
 }

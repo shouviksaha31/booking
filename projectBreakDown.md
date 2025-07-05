@@ -42,11 +42,11 @@ This document outlines the end-to-end build plan for the Flight Booking Platform
 - [x] Implement REST controllers for airports and airlines
 
 ### 2.4 Service Layer Implementation
-- [ ] Implement Flight search service
-- [ ] Implement Flight details service
-- [ ] Implement Seat availability service
-- [ ] Implement Journey search and validation service
-- [ ] Implement data indexing and update services
+- [x] Implement Flight search service
+- [x] Implement Flight details service
+- [x] Implement Seat availability service
+- [x] Implement Journey search and validation service
+- [x] Implement data indexing and update services
 
 ### 2.5 Testing
 - [ ] Implement unit tests for domain models and services

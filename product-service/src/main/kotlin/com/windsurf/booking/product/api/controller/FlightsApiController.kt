@@ -25,11 +25,11 @@ class FlightsApiController(
         origin: String,
         destination: String,
         departureDate: LocalDate,
-        returnDate: LocalDate?,
         passengers: Int,
-        cabinClass: String?,
-        pageNumber: Int?,
-        pageSize: Int?
+        returnDate: LocalDate?,
+        cabinClass: String,
+        pageNumber: Int,
+        pageSize: Int
     ): ResponseEntity<FlightSearchResponse> {
         logger.info("Searching flights from $origin to $destination on $departureDate")
         
@@ -39,25 +39,19 @@ class FlightsApiController(
             departureDate = departureDate,
             returnDate = returnDate,
             passengers = passengers,
-            cabinClass = cabinClass ?: "ECONOMY",
-            page = pageNumber ?: 0,
-            size = pageSize ?: 20
+            cabinClass = cabinClass,
+            page = pageNumber,
+            size = pageSize
         )
         
         return ResponseEntity.ok(searchResponse)
     }
 
     override fun getFlightDetails(flightId: String): ResponseEntity<Flight> {
-        logger.info("Getting details for flight $flightId")
+        logger.info("Getting details for flight: $flightId")
         
         val flight = flightService.getFlightById(flightId)
-        return ResponseEntity.ok(flight)
-    }
-
-    override fun getFlightSeats(flightId: String): ResponseEntity<SeatResponse> {
-        logger.info("Getting seats for flight $flightId")
         
-        val seatResponse = seatService.getSeatsForFlight(flightId)
-        return ResponseEntity.ok(seatResponse)
+        return ResponseEntity.ok(flight)
     }
 }

@@ -109,6 +109,41 @@ This file tracks key architectural and technical decisions made during the proje
 - **Alternatives Considered**: Database triggers, application-level synchronization in repository methods
 - **Consequences**: Better separation of concerns, potential for asynchronous updates, additional complexity
 
+### AD-016: OpenAPI-First Approach
+- **Date**: 2025-07-05
+- **Decision**: Use OpenAPI-first approach for API development with code generation
+- **Rationale**: Ensures consistent API design, provides automatic documentation, and reduces boilerplate code
+- **Alternatives Considered**: Code-first approach with annotations, manual API documentation
+- **Consequences**: Better API consistency, reduced development time, potential limitations in complex scenarios
+
+### AD-017: Multi-Project Gradle Structure
+- **Date**: 2025-07-05
+- **Decision**: Use Gradle multi-project structure with Kotlin DSL
+- **Rationale**: Provides better organization of code, reuse of common components, and simplified dependency management
+- **Alternatives Considered**: Single project structure, Maven multi-module
+- **Consequences**: Better code organization, simplified dependency management, more complex build configuration
+
+### AD-018: Dual Repository Pattern
+- **Date**: 2025-07-05
+- **Decision**: Use dual repository pattern with PostgreSQL for transactional data and Elasticsearch for search
+- **Rationale**: Leverages the strengths of both databases - ACID transactions in PostgreSQL and search capabilities in Elasticsearch
+- **Alternatives Considered**: Single database with search extensions, microservice per database type
+- **Consequences**: Better performance for different use cases, more complex data synchronization, additional infrastructure requirements
+
+### AD-019: Data Synchronization Service
+- **Date**: 2025-07-05
+- **Decision**: Implement a dedicated data synchronization service to keep PostgreSQL and Elasticsearch in sync
+- **Rationale**: Ensures data consistency between databases while decoupling the synchronization logic from business logic
+- **Alternatives Considered**: Database triggers, application-level synchronization in repositories
+- **Consequences**: Better separation of concerns, more complex architecture, additional component to maintain
+
+### AD-020: Delegate Pattern for Controllers
+- **Date**: 2025-07-05
+- **Decision**: Use delegate pattern for controllers with service interfaces
+- **Rationale**: Separates API contract from implementation, enables better testing, and provides clearer separation of concerns
+- **Alternatives Considered**: Direct implementation in controllers, service layer without interfaces
+- **Consequences**: Better testability, clearer separation of concerns, additional interfaces to maintain
+
 ### Change Log Entry [2025-07-05]
 - **What**: Initial file creation
 - **Why**: Setting up memory bank structure

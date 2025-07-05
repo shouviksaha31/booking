@@ -16,15 +16,15 @@ class AirlinesApiController(
 
     override fun getAirlines(
         query: String?,
-        pageNumber: Int?,
-        pageSize: Int?
+        pageNumber: Int,
+        pageSize: Int
     ): ResponseEntity<AirlineResponse> {
-        logger.info("Getting airlines with query: $query")
+        logger.info("Getting airlines with query: $query, page: $pageNumber, size: $pageSize")
         
         val airlineResponse = airlineService.getAirlines(
             query = query,
-            page = pageNumber ?: 0,
-            size = pageSize ?: 20
+            page = pageNumber,
+            size = pageSize
         )
         
         return ResponseEntity.ok(airlineResponse)

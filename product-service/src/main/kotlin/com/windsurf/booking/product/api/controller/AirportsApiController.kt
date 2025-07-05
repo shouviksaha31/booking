@@ -17,16 +17,16 @@ class AirportsApiController(
     override fun getAirports(
         query: String?,
         country: String?,
-        pageNumber: Int?,
-        pageSize: Int?
+        pageNumber: Int,
+        pageSize: Int
     ): ResponseEntity<AirportResponse> {
-        logger.info("Getting airports with query: $query, country: $country")
+        logger.info("Getting airports with query: $query, country: $country, page: $pageNumber, size: $pageSize")
         
         val airportResponse = airportService.getAirports(
             query = query,
             country = country,
-            page = pageNumber ?: 0,
-            size = pageSize ?: 20
+            page = pageNumber,
+            size = pageSize
         )
         
         return ResponseEntity.ok(airportResponse)

@@ -17,6 +17,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     
+    // Elasticsearch client (new Java API Client)
+    implementation("co.elastic.clients:elasticsearch-java:8.11.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    
     // OpenAPI
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
     implementation("io.swagger.core.v3:swagger-annotations:2.2.16")
@@ -44,7 +48,7 @@ dependencies {
 openApiGenerate {
     generatorName.set("kotlin-spring")
     inputSpec.set("$projectDir/src/main/resources/openapi/product-service-api.yaml")
-    outputDir.set("$buildDir/generated")
+    outputDir.set("$projectDir/build/generated")
     apiPackage.set("com.windsurf.booking.product.api")
     modelPackage.set("com.windsurf.booking.product.api.model")
     configOptions.set(mapOf(
